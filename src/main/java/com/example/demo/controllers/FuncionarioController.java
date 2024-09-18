@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.demo.entities.Dependente;
 import com.example.demo.entities.Funcionario;
+import com.example.demo.repositories.DependenteRepository;
 import com.example.demo.repositories.FuncionarioRepository;
 
 @RestController
@@ -24,9 +26,13 @@ public class FuncionarioController {
     @Autowired
     private final FuncionarioRepository repository;
 
-    public FuncionarioController(FuncionarioRepository repository)
+    @Autowired
+    private final DependenteRepository dependenteRepository;
+
+    public FuncionarioController(FuncionarioRepository repository, DependenteRepository dependenteRepository)
     {
         this.repository = repository;
+        this.dependenteRepository = dependenteRepository;
     }
 
     @GetMapping("/funcionario")
@@ -40,6 +46,9 @@ public class FuncionarioController {
     {
         //faz um insert na tabela Funcionario
         repository.save(funcionario);
+        /*for (Dependente dependente : funcionario.getListaDependentes()) {
+            dependenteRepository.save(dependente);
+        }*/
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
           .path("/funcionario/{id}")
           .buildAndExpand(funcionario.getId())

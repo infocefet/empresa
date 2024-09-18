@@ -1,8 +1,13 @@
 package com.example.demo.entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 
 @Entity //Entidade, ou seja, vai criar tabela correspondente
 public class Funcionario {
@@ -12,6 +17,10 @@ public class Funcionario {
     private Long id;
     private String nome;
     private String cargo;
+
+    @OneToMany(mappedBy="funcionarioTitular", cascade = CascadeType.PERSIST)
+    private List<Dependente> listaDependentes;
+
 
     //sempre crie o construtor padrão nas entidades
     //exigência do SpringBoot
@@ -48,7 +57,11 @@ public class Funcionario {
     {
         this.cargo = cargo;
     }
-    
+    public List<Dependente> getListaDependentes()
+    {
+        return listaDependentes;
+    }
+
     @Override
     public String toString() {
      return "Funcionario{" + "id=" + this.id + ", name='" + this.nome + '\'' + ", role='" + this.cargo + '\'' + '}';
